@@ -43,12 +43,8 @@ public class UserDAO {
 
         String passwordHash = makePasswordHash(password, Integer.toString(random.nextInt()));
 
-        // XXX WORK HERE
-        // create an object suitable for insertion into the user collection
-        // be sure to add username and hashed password to the document. problem instructions
-        // will tell you the schema that the documents must follow.
-
-
+        // { "_id" : "erlichson", "password" : "VH9IFu+/vUNSKTzZsFZEOsK1,-1924261330" }
+        BasicDBObject userDbObject = new BasicDBObject("_id", username).append("password", passwordHash);        
 
         if (email != null && !email.equals("")) {
             // XXX WORK HERE
@@ -56,8 +52,8 @@ public class UserDAO {
         }
 
         try {
-            // XXX WORK HERE
-            // insert the document into the user collection here
+            usersCollection.insert(userDbObject);
+
             return true;
         } catch (MongoException.DuplicateKey e) {
             System.out.println("Username already in use: " + username);
