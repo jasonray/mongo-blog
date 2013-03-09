@@ -63,8 +63,6 @@ public class UserDAO {
     public DBObject validateLogin(String username, String password) {
         DBObject user = null;
 
-        // XXX look in the user collection for a user that has this username
-        // assign the result to the user variable.
         BasicDBObject query = new BasicDBObject("_id", username);
         user = usersCollection.findOne(query);
 
