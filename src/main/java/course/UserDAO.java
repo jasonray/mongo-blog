@@ -44,11 +44,10 @@ public class UserDAO {
         String passwordHash = makePasswordHash(password, Integer.toString(random.nextInt()));
 
         // { "_id" : "erlichson", "password" : "VH9IFu+/vUNSKTzZsFZEOsK1,-1924261330" }
-        BasicDBObject userDbObject = new BasicDBObject("_id", username).append("password", passwordHash);        
+        BasicDBObject userDbObject = new BasicDBObject("_id", username).append("password", passwordHash);
 
         if (email != null && !email.equals("")) {
-            // XXX WORK HERE
-            // if there is an email address specified, add it to the document too.
+            userDbObject = userDbObject.append("email", email);
         }
 
         try {
