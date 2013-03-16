@@ -68,17 +68,6 @@ public class BlogPostDAO {
 
 
         BasicDBObject post = new BasicDBObject();
-        // XXX HW 3.2, Work Here
-        // Remember that a valid post has the following keys:
-        // author, body, permalink, tags, comments, date
-        //
-        // A few hints:
-        // - Don't forget to create an empty list of comments
-        // - for the value of the date key, today's datetime is fine.
-        // - tags are already in list form that implements suitable interface.
-        // - we created the permalink for you above.
-
-        // Build the post object and insert it
         post = post.append("author", username);
         post.append("body", body);
         post.append("permalink", permalink);
