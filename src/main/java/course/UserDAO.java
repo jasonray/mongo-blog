@@ -43,16 +43,17 @@ public class UserDAO {
 
         String passwordHash = makePasswordHash(password, Integer.toString(random.nextInt()));
 
-        // { "_id" : "erlichson", "password" : "VH9IFu+/vUNSKTzZsFZEOsK1,-1924261330" }
-        BasicDBObject userDbObject = new BasicDBObject("_id", username).append("password", passwordHash);
+        BasicDBObject user = new BasicDBObject();
+
+        user.append("_id", username).append("password", passwordHash);
 
         if (email != null && !email.equals("")) {
-            userDbObject = userDbObject.append("email", email);
+            // the provided email address
+            user.append("email", email);
         }
 
         try {
-            usersCollection.insert(userDbObject);
-
+            usersCollection.insert(user);
             return true;
         } catch (MongoException.DuplicateKey e) {
             System.out.println("Username already in use: " + username);
@@ -61,10 +62,9 @@ public class UserDAO {
     }
 
     public DBObject validateLogin(String username, String password) {
-        DBObject user = null;
+        DBObject user;
 
-        BasicDBObject query = new BasicDBObject("_id", username);
-        user = usersCollection.findOne(query);
+        user = usersCollection.findOne(new BasicDBObject("_id", username));
 
         if (user == null) {
             System.out.println("User not in database");
