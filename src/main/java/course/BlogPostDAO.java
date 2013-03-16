@@ -38,6 +38,7 @@ public class BlogPostDAO {
 
     // Return a single post corresponding to a permalink
     public DBObject findByPermalink(String permalink) {
+        System.out.println("fetching single blog entry " + permalink);
 
         DBObject post = null;
 
@@ -50,10 +51,12 @@ public class BlogPostDAO {
     // Return a list of posts in descending order. Limit determines
     // how many posts are returned.
     public List<DBObject> findByDateDescending(int limit) {
+        System.out.println("fetching blog entries");
 
         List<DBObject> posts = null;
-        // XXX HW 3.2,  Work Here
-        // Return a list of DBObjects, each one a post from the posts collection
+
+        DBObject sort = new BasicDBObject("date", -1);
+        posts = postsCollection.find().sort(sort).limit(limit).toArray();
 
         return posts;
     }
@@ -69,7 +72,7 @@ public class BlogPostDAO {
 
         BasicDBObject post = new BasicDBObject();
         post = post.append("author", username);
-        post.append("title",title);
+        post.append("title", title);
         post.append("body", body);
         post.append("permalink", permalink);
         post.append("tags", tags);
@@ -95,6 +98,18 @@ public class BlogPostDAO {
         // - best solution uses an update command to the database and a suitable
         //   operator to append the comment on to any existing list of comments
 
+        BasicDBObject filter = new BasicDBObject("permalink", permalink);
+
+        BasicDBObject commentRecord = new BasicDBObject("body", body);
+        commentRecord.append("author", name);
+        if (email != null && !email.contentEquals("")) {
+            commentRecord.append("email", email);
+        }
+
+        DBObject commentsRecord = new BasicDBObject("comments", commentRecord);
+        DBObject pushCommand = new BasicDBObject("$push", commentsRecord);
+
+        postsCollection.update(filter, pushCommand);
 
     }
 
