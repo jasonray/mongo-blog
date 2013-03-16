@@ -40,8 +40,9 @@ public class BlogPostDAO {
     public DBObject findByPermalink(String permalink) {
 
         DBObject post = null;
-        // XXX HW 3.2,  Work Here
 
+        BasicDBObject filter = new BasicDBObject("permalink", permalink);
+        post = postsCollection.findOne(filter);
 
         return post;
     }
@@ -66,9 +67,9 @@ public class BlogPostDAO {
         permalink = permalink.replaceAll("\\W", ""); // get rid of non alphanumeric
         permalink = permalink.toLowerCase();
 
-
         BasicDBObject post = new BasicDBObject();
         post = post.append("author", username);
+        post.append("title",title);
         post.append("body", body);
         post.append("permalink", permalink);
         post.append("tags", tags);
