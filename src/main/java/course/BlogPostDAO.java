@@ -25,6 +25,8 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.sun.org.apache.bcel.internal.generic.ACONST_NULL;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BlogPostDAO {
@@ -39,7 +41,6 @@ public class BlogPostDAO {
 
         DBObject post = null;
         // XXX HW 3.2,  Work Here
-
 
 
         return post;
@@ -78,21 +79,20 @@ public class BlogPostDAO {
         // - we created the permalink for you above.
 
         // Build the post object and insert it
+        post = post.append("author", username);
+        post.append("body", body);
+        post.append("permalink", permalink);
+        post.append("tags", tags);
+        post.append("comments", new ArrayList());
+        post.append("date", new Date());
 
+        postsCollection.insert(post);
 
         return permalink;
     }
 
 
-
-
-   // White space to protect the innocent
-
-
-
-
-
-
+    // White space to protect the innocent
 
 
     // Append a comment to a blog post
@@ -104,7 +104,6 @@ public class BlogPostDAO {
         // - email is optional and may come in NULL. Check for that.
         // - best solution uses an update command to the database and a suitable
         //   operator to append the comment on to any existing list of comments
-
 
 
     }
